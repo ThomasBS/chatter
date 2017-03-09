@@ -17,19 +17,31 @@ class ChatterDiscussionController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         $total = 10;
         $offset = 0;
+
         if ($request->total) {
             $total = $request->total;
         }
+
         if ($request->offset) {
             $offset = $request->offset;
         }
-        $discussions = Models::discussion()->with('user')->with('post')->with('postsCount')->with('category')->orderBy('created_at', 'ASC')->take($total)->offset($offset)->get();
+
+        $discussions = Models::discussion()
+            ->with('user')
+            ->with('post')
+            ->with('postsCount')
+            ->with('category')
+            ->orderBy('created_at', 'ASC')
+            ->take($total)
+            ->offset($offset)
+            ->get();
 
         return response()->json($discussions);
     }
@@ -57,16 +69,16 @@ class ChatterDiscussionController extends Controller
     {
         $request->request->add(['body_content' => strip_tags($request->body)]);
 
-        $validator = Validator::make($request->all(), [
-            'title'               => 'required|min:5|max:255',
-            'body_content'        => 'required|min:10',
-            'chatter_category_id' => 'required',
-        ]);
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'title' => 'required|min:5|max:255',
+                'body_content' => 'required|min:2',
+                'chatter_category_id' => 'required',
+            ]
+        );
 
         Event::fire(new ChatterBeforeNewDiscussion($request, $validator));
-        if (function_exists('chatter_before_new_discussion')) {
-            chatter_before_new_discussion($request, $validator);
-        }
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -79,10 +91,12 @@ class ChatterDiscussionController extends Controller
                 $minute_copy = (config('chatter.security.time_between_posts') == 1) ? ' minute' : ' minutes';
                 $chatter_alert = [
                     'chatter_alert_type' => 'danger',
-                    'chatter_alert'      => 'In order to prevent spam, Please allow at least '.config('chatter.security.time_between_posts').$minute_copy.' inbetween submitting content.',
-                    ];
+                    'chatter_alert' => 'In order to prevent spam, Please allow at least ' . config(
+                            'chatter.security.time_between_posts'
+                        ) . $minute_copy . ' inbetween submitting content.',
+                ];
 
-                return redirect('/'.config('chatter.routes.home'))->with($chatter_alert)->withInput();
+                return redirect('/' . config('chatter.routes.home'))->with($chatter_alert)->withInput();
             }
         }
 
@@ -93,7 +107,7 @@ class ChatterDiscussionController extends Controller
         $incrementer = 1;
         $new_slug = $slug;
         while (isset($discussion_exists->id)) {
-            $new_slug = $slug.'-'.$incrementer;
+            $new_slug = $slug . '-' . $incrementer;
             $discussion_exists = Models::discussion()->where('slug', '=', $new_slug)->first();
             $incrementer += 1;
         }
@@ -103,12 +117,12 @@ class ChatterDiscussionController extends Controller
         }
 
         $new_discussion = [
-            'title'               => $request->title,
+            'title' => $request->title,
             'chatter_category_id' => $request->chatter_category_id,
-            'user_id'             => $user_id,
-            'slug'                => $slug,
-            'color'               => $request->color,
-            ];
+            'user_id' => $user_id,
+            'slug' => $slug,
+            'color' => $request->color,
+        ];
 
         $category = Models::category()->find($request->chatter_category_id);
         if (!isset($category->slug)) {
@@ -119,12 +133,12 @@ class ChatterDiscussionController extends Controller
 
         $new_post = [
             'chatter_discussion_id' => $discussion->id,
-            'user_id'               => $user_id,
-            'body'                  => $request->body,
-            ];
+            'user_id' => $user_id,
+            'body' => $request->body,
+        ];
 
         if (config('chatter.editor') == 'simplemde'):
-           $new_post['markdown'] = 1;
+            $new_post['markdown'] = 1;
         endif;
 
         // add the user to automatically be notified when new posts are submitted
@@ -134,21 +148,18 @@ class ChatterDiscussionController extends Controller
 
         if ($post->id) {
             Event::fire(new ChatterAfterNewDiscussion($request));
-            if (function_exists('chatter_after_new_discussion')) {
-                chatter_after_new_discussion($request);
-            }
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',
-                'chatter_alert'      => 'Successfully created new '.config('chatter.titles.discussion').'.',
-                ];
+                'chatter_alert' => 'Successfully created new ' . config('chatter.titles.discussion') . '.',
+            ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$slug)->with($chatter_alert);
         } else {
             $chatter_alert = [
                 'chatter_alert_type' => 'danger',
-                'chatter_alert'      => 'Whoops :( There seems to be a problem creating your '.config('chatter.titles.discussion').'.',
-                ];
+                'chatter_alert' => 'Whoops :( There seems to be a problem creating your '.config('chatter.titles.discussion').'.',
+            ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$slug)->with($chatter_alert);
         }
@@ -172,7 +183,8 @@ class ChatterDiscussionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param string $category
+     * @param string $slug
      *
      * @return \Illuminate\Http\Response
      */
@@ -191,7 +203,10 @@ class ChatterDiscussionController extends Controller
         if ($category != $discussion_category->slug) {
             return redirect(config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$discussion_category->slug.'/'.$discussion->slug);
         }
-        $posts = Models::post()->with('user')->where('chatter_discussion_id', '=', $discussion->id)->orderBy('created_at', 'ASC')->paginate(10);
+        $posts = Models::post()->with('user')->where('chatter_discussion_id', '=', $discussion->id)->orderBy(
+            'created_at',
+            'ASC'
+        )->paginate(10);
 
         $chatter_editor = config('chatter.editor');
 
@@ -217,7 +232,7 @@ class ChatterDiscussionController extends Controller
      * Update the specified resource in storage.
      *
      * @param \Illuminate\Http\Request $request
-     * @param int                      $id
+     * @param int $id
      *
      * @return \Illuminate\Http\Response
      */
@@ -280,7 +295,7 @@ class ChatterDiscussionController extends Controller
 
             return response()->json(0);
         } else { // otherwise add it
-             $discussion->users()->attach($user_id);
+            $discussion->users()->attach($user_id);
 
             return response()->json(1);
         }

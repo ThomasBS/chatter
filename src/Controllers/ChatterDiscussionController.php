@@ -72,7 +72,7 @@ class ChatterDiscussionController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                'title' => 'required|min:5|max:255',
+                'title' => 'required|min:10|max:255',
                 'body_content' => 'required|min:2',
                 'chatter_category_id' => 'required',
             ]

@@ -47,7 +47,7 @@ class ChatterPostController extends Controller
     {
         $stripped_tags_body = ['body' => strip_tags($request->body)];
         $validator = Validator::make($stripped_tags_body, [
-            'body' => 'required|min:10',
+            'body' => 'required|min:2',
         ]);
 
         Event::fire(new ChatterBeforeNewResponse($request, $validator));

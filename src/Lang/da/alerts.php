@@ -12,4 +12,11 @@ return [
 
     'discussion_submit_success:discussion' => 'Dit indlæg :discussion blev oprettet.',
     'discussion_submit_fail:discussion' => 'Beklager, det ser ud til at dit indlæg :discussion ikke kunne oprettes.',
+
+    'messages' => [
+        'success' => 'Sådan!',
+        'info' => 'OBS!',
+        'warning' => 'Woops!',
+        'danger' => 'Åh åh!',
+    ]
 ];

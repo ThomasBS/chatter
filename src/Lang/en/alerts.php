@@ -12,4 +12,11 @@ return [
 
     'discussion_submit_success:discussion' => 'Successfully created new :discussion.',
     'discussion_submit_fail:discussion' => 'Whoops :( There seems to be a problem creating your :discussion.',
+
+    'messages' => [
+        'success' => 'Well done!',
+        'info' => 'Heads Up!',
+        'warning' => 'Wuh Oh!',
+        'danger' => 'Oh Snap!',
+    ]
 ];

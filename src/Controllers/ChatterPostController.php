@@ -64,7 +64,7 @@ class ChatterPostController extends Controller
                 $minute_copy = (config('chatter.security.time_between_posts') == 1) ? ' minute' : ' minutes';
                 $chatter_alert = [
                     'chatter_alert_type' => 'danger',
-                    'chatter_alert'      => trans('chatter::alerts.spam_prevention_notice:mins', ['mins' => config('chatter.security.time_between_posts').$minute_copy]),
+                    'chatter_alert'      => trans('chatter::alerts.spam_prevention_notice:mins', ['mins' => config('chatter.security.time_between_posts')]),
                     ];
 
                 return back()->with($chatter_alert)->withInput();

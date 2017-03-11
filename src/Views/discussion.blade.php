@@ -20,7 +20,7 @@
 	@if(Session::has('chatter_alert'))
 		<div class="chatter-alert alert alert-{{ Session::get('chatter_alert_type') }}">
 			<div class="container">
-	        	<strong><i class="chatter-alert-{{ Session::get('chatter_alert_type') }}"></i> {{ Config::get('chatter.alert_messages.' . Session::get('chatter_alert_type')) }}</strong>
+				<strong><i class="chatter-alert-{{ Session::get('chatter_alert_type') }}"></i> {{ trans('chatter::alerts.messages.' . Session::get('chatter_alert_type')) }}</strong>
 	        	{{ Session::get('chatter_alert') }}
 	        	<i class="chatter-close"></i>
 	        </div>

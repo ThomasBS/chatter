@@ -100,7 +100,7 @@ class ChatterPostController extends Controller
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',
-                'chatter_alert'      => trans('chatter::alerts.response_submit_success:discussion', ['discussion' => config('chatter.titles.discussion')]),
+                'chatter_alert'      => trans('chatter::alerts.response_submit_success'),
                 ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$discussion->slug)->with($chatter_alert);
@@ -170,7 +170,7 @@ class ChatterPostController extends Controller
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',
-                'chatter_alert'      => trans('chatter::alerts.response_update_success:discussion', ['discussion' => config('chatter.titles.discussion')]),
+                'chatter_alert'      => trans('chatter::alerts.response_update_success'),
                 ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$discussion->slug)->with($chatter_alert);
@@ -209,7 +209,7 @@ class ChatterPostController extends Controller
 
             return redirect('/'.config('chatter.routes.home'))->with([
                 'chatter_alert_type' => 'success',
-                'chatter_alert'      => trans('chatter::alerts.response_and_discussion_delete_success:discussion', ['discussion' => strtolower(config('chatter.titles.discussion'))]),
+                'chatter_alert'      => trans('chatter::alerts.response_and_discussion_delete_success'),
             ]);
         }
 
@@ -219,7 +219,7 @@ class ChatterPostController extends Controller
 
         return redirect($url)->with([
             'chatter_alert_type' => 'success',
-            'chatter_alert'      => trans('chatter::alerts.response_delete_success:discussion', ['discussion' => config('chatter.titles.discussion')]),
+            'chatter_alert'      => trans('chatter::alerts.response_delete_success'),
         ]);
     }
 }

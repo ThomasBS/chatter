@@ -149,10 +149,10 @@ return [
     */
 
     'alert_messages' => [
-        'success' => trans('chatter::alerts.messages.success'),
-        'info'    => trans('chatter::alerts.messages.info'),
-        'warning' => trans('chatter::alerts.messages.warning'),
-        'danger'  => trans('chatter::alerts.messages.danger'),
+        'success' => 'Well done!',
+        'info'    => 'Heads Up!',
+        'warning' => 'Wuh Oh!',
+        'danger'  => 'Oh Snap!',
     ],
 
     /*

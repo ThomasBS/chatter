@@ -149,14 +149,14 @@ class ChatterDiscussionController extends Controller
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',
-                'chatter_alert' => trans('chatter::alerts.discussion_submit_success:discussion', ['discussion' => config('chatter.titles.discussion')]),
+                'chatter_alert' => trans('chatter::alerts.discussion_submit_success'),
             ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$slug)->with($chatter_alert);
         } else {
             $chatter_alert = [
                 'chatter_alert_type' => 'danger',
-                'chatter_alert' => trans('chatter::alerts.discussion_submit_fail:discussion', ['discussion' => config('chatter.titles.discussion')]),
+                'chatter_alert' => trans('chatter::alerts.discussion_submit_fail'),
             ];
 
             return redirect('/'.config('chatter.routes.home').'/'.config('chatter.routes.discussion').'/'.$category->slug.'/'.$slug)->with($chatter_alert);

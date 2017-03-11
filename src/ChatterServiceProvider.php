@@ -30,6 +30,8 @@ class ChatterServiceProvider extends ServiceProvider
         ], 'chatter_seeds');
         // include the routes file
         include __DIR__.'/Routes/web.php';
+        // load translations
+        $this->loadTranslationsFrom(__DIR__.'/Lang', 'chatter');
     }
 
     /**

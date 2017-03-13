@@ -6,6 +6,7 @@ use Auth;
 use Carbon\Carbon;
 use DevDojo\Chatter\Events\ChatterAfterNewResponse;
 use DevDojo\Chatter\Events\ChatterBeforeNewResponse;
+use DevDojo\Chatter\Events\ChatterBeforeUpdateResponse;
 use DevDojo\Chatter\Mail\ChatterDiscussionUpdated;
 use DevDojo\Chatter\Models\Models;
 use Event;
@@ -151,6 +152,8 @@ class ChatterPostController extends Controller
         $validator = Validator::make($stripped_tags_body, [
             'body' => 'required|min:10',
         ]);
+
+        Event::fire(new ChatterBeforeUpdateResponse($request, $validator));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();

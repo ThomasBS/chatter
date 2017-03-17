@@ -161,7 +161,7 @@ class ChatterPostController extends Controller
 
         $post = Models::post()->find($id);
         if (!Auth::guest() && (Auth::user()->id == $post->user_id)) {
-            $post->body = strip_tags($request->body);
+            $post->body = strip_tags($request->body, '<p>');
             $post->save();
 
             $discussion = Models::discussion()->find($post->chatter_discussion_id);

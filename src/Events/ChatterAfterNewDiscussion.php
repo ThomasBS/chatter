@@ -2,22 +2,22 @@
 
 namespace DevDojo\Chatter\Events;
 
-use Illuminate\Http\Request;
+use DevDojo\Chatter\Models\Discussion;
 
 class ChatterAfterNewDiscussion
 {
     /**
-     * @var Request
+     * @var Discussion
      */
-    public $request;
+    public $discussion;
 
     /**
      * Constructor.
      *
-     * @param Request $request
+     * @param Discussion $discussion
      */
-    public function __construct(Request $request)
+    public function __construct(Discussion $discussion)
     {
-        $this->request = $request;
+        $this->discussion = $discussion;
     }
 }

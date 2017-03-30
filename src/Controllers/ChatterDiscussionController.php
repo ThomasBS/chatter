@@ -145,7 +145,7 @@ class ChatterDiscussionController extends Controller
         $post = Models::post()->create($new_post);
 
         if ($post->id) {
-            Event::fire(new ChatterAfterNewDiscussion($request));
+            Event::fire(new ChatterAfterNewDiscussion($discussion));
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',

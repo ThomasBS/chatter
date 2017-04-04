@@ -22,6 +22,10 @@ class ChatterDiscussionController extends Controller
      */
     public function index(Request $request)
     {
+        // just return empty array to avoid exposing user data for
+        // what I only can see is a unused index function
+        return response()->json([]);
+
         $total = 10;
         $offset = 0;
 

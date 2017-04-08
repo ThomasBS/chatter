@@ -78,7 +78,7 @@ class ChatterDiscussionController extends Controller
             [
                 'title' => 'required|min:10|max:255',
                 'body_content' => 'required|min:2',
-                'chatter_category_id' => 'required',
+                'chatter_category_id' => 'required|integer|exists:chatter_categories,id',
             ]
         );
 

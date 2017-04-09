@@ -24,6 +24,7 @@ class ChatterPostController extends Controller
      */
     public function index(Request $request)
     {
+        return response()->json([]);
         $total = 10;
         $offset = 0;
         if ($request->total) {

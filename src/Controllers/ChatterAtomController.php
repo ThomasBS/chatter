@@ -16,6 +16,7 @@ class ChatterAtomController extends Controller
      */
     public function index()
     {
+        return response()->json([]);
         $discussions = Discussion::limit(20)->orderBy('created_at', 'DESC')->get();
         $discussions->load(['user', 'posts']);
 

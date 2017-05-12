@@ -4,6 +4,7 @@ namespace DevDojo\Chatter\Controllers;
 
 use Auth;
 use Carbon\Carbon;
+use DevDojo\Chatter\Events\ChatterAfterDeleteDiscussion;
 use DevDojo\Chatter\Events\ChatterAfterNewResponse;
 use DevDojo\Chatter\Events\ChatterBeforeNewResponse;
 use DevDojo\Chatter\Events\ChatterBeforeUpdateResponse;
@@ -218,6 +219,7 @@ class ChatterPostController extends Controller
         if ($post->discussion->posts()->oldest()->first()->id === $post->id) {
             $post->discussion->posts()->delete();
             $post->discussion()->delete();
+            Event::fire(new ChatterAfterDeleteDiscussion($post->discussion->id));
 
             return redirect('/'.config('chatter.routes.home'))->with([
                 'chatter_alert_type' => 'success',

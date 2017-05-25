@@ -155,13 +155,6 @@ Route::group([
             'middleware' => $middleware('post.index'),
         ]);
 
-        // Create post view.
-        Route::get('create', [
-            'as'         => 'create',
-            'uses'       => 'ChatterPostController@create',
-            'middleware' => $authMiddleware('post.create'),
-        ]);
-
         // Store post action.
         Route::post('/', [
             'as'         => 'store',
@@ -175,20 +168,6 @@ Route::group([
         Route::group([
             'prefix' => '{post}',
         ], function () use ($middleware, $authMiddleware) {
-
-            // Single post view.
-            Route::get('/', [
-                'as'         => 'show',
-                'uses'       => 'ChatterPostController@show',
-                'middleware' => $middleware('post.show'),
-            ]);
-
-            // Edit post view.
-            Route::get('edit', [
-                'as'         => 'edit',
-                'uses'       => 'ChatterPostController@edit',
-                'middleware' => $authMiddleware('post.edit'),
-            ]);
 
             // Update post action.
             Route::match(['PUT', 'PATCH'], '/', [

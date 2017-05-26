@@ -169,7 +169,13 @@ class ChatterPostController extends Controller
                 '<strong>',
                 '<i>',
                 '<em>',
-                '<span>'
+                '<span>',
+                '<ul>',
+                '<ol>',
+                '<li>',
+                '<a>',
+                '<u>',
+                '<div>'
             ];
             $post->body = strip_tags($request->body, implode(',', $allowedTags));
             $post->save();

@@ -83,6 +83,10 @@ class ChatterPostController extends Controller
         $new_post = Models::post()->create($request->all());
 
         $discussion = Models::discussion()->find($request->chatter_discussion_id);
+        if ($discussion) {
+            $discussion->updated_at = date('Y-m-d H:i:s');
+            $discussion->save();
+        }
 
         $category = Models::category()->find($discussion->chatter_category_id);
         if (!isset($category->slug)) {

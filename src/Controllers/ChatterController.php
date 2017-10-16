@@ -20,13 +20,22 @@ class ChatterController extends Controller
             }
         }
 
+        $stickyDiscussions = Models::discussion()
+            ->where('sticky', true)
+            ->with('user')
+            ->with('post')
+            ->with('postsCount')
+            ->with('category')
+            ->orderBy('updated_at', 'DESC')
+            ->get();
+
         $categories = Models::category()->all();
         $chatter_editor = config('chatter.editor');
 
         // Dynamically register markdown service provider
         \App::register('GrahamCampbell\Markdown\MarkdownServiceProvider');
 
-        return view('chatter::home', compact('discussions', 'categories', 'chatter_editor'));
+        return view('chatter::home', compact('stickyDiscussions', 'discussions', 'categories', 'chatter_editor'));
     }
 
     public function login()

@@ -212,9 +212,6 @@ class ChatterDiscussionController extends Controller
 
         $chatter_editor = config('chatter.editor');
 
-        // Dynamically register markdown service provider
-        \App::register('GrahamCampbell\Markdown\MarkdownServiceProvider');
-
         return view('chatter::discussion', compact('discussion', 'posts', 'chatter_editor'));
     }
 

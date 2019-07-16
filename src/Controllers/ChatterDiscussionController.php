@@ -82,7 +82,7 @@ class ChatterDiscussionController extends Controller
             ]
         );
 
-        Event::fire(new ChatterBeforeNewDiscussion($request, $validator));
+        Event::dispatch(new ChatterBeforeNewDiscussion($request, $validator));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -149,7 +149,7 @@ class ChatterDiscussionController extends Controller
         $post = Models::post()->create($new_post);
 
         if ($post->id) {
-            Event::fire(new ChatterAfterNewDiscussion($discussion));
+            Event::dispatch(new ChatterAfterNewDiscussion($discussion));
 
             $chatter_alert = [
                 'chatter_alert_type' => 'success',

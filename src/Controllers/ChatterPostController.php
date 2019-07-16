@@ -53,7 +53,7 @@ class ChatterPostController extends Controller
             'body' => 'required|min:2',
         ]);
 
-        Event::fire(new ChatterBeforeNewResponse($request, $validator));
+        Event::dispatch(new ChatterBeforeNewResponse($request, $validator));
         if (function_exists('chatter_before_new_response')) {
             chatter_before_new_response($request, $validator);
         }
@@ -94,7 +94,7 @@ class ChatterPostController extends Controller
         }
 
         if ($new_post->id) {
-            Event::fire(new ChatterAfterNewResponse($request));
+            Event::dispatch(new ChatterAfterNewResponse($request));
             if (function_exists('chatter_after_new_response')) {
                 chatter_after_new_response($request);
             }
@@ -159,7 +159,7 @@ class ChatterPostController extends Controller
             'body' => 'required|min:2',
         ]);
 
-        Event::fire(new ChatterBeforeUpdateResponse($request, $validator));
+        Event::dispatch(new ChatterBeforeUpdateResponse($request, $validator));
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput();
@@ -229,7 +229,7 @@ class ChatterPostController extends Controller
         if ($post->discussion->posts()->oldest()->first()->id === $post->id) {
             $post->discussion->posts()->delete();
             $post->discussion()->delete();
-            Event::fire(new ChatterAfterDeleteDiscussion($post->discussion->id));
+            Event::dispatch(new ChatterAfterDeleteDiscussion($post->discussion->id));
 
             return redirect('/'.config('chatter.routes.home'))->with([
                 'chatter_alert_type' => 'success',
